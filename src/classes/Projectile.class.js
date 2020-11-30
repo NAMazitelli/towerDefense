@@ -4,7 +4,7 @@ import { HOVERED_TILE_OK, SELECTED_TILE, DEFAULT_MATERIAL } from '../utils/const
 
 export class Projectile {
     constructor(props){
-        this.speed = 0.8;
+        this.speed = 1;
         this.tile = props.tile;
         this.spawnTile = props.spawnTile;
         this.mesh;

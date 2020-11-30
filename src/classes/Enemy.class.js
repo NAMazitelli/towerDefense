@@ -1,5 +1,6 @@
 import * as THREE from '../utils/three.module.js';
 import { DEFAULT_MATERIAL } from '../utils/constants.js';
+import { SkeletonUtils } from '../utils/SkeletonUtils.js';
 
 export class EnemyParent {
     constructor(props){
@@ -19,11 +20,22 @@ export class EnemyParent {
 
     spawn() {
 	  var objGeometry = new THREE.SphereBufferGeometry( 20, 10, 10 );
-
-	  this.mesh = new THREE.Mesh(objGeometry, DEFAULT_MATERIAL);
+     // this.mesh = window.meshes.ENEMY.clone();
+      this.mesh= SkeletonUtils.clone(window.meshes.ENEMY_FBX);
+      this.mesh.animations = window.meshes.ENEMY_FBX.animations
+		console.log("1", this.mesh)		
+        this.mesh.scale.set(.3, .3, .3)				
+		this.mixer = new THREE.AnimationMixer( this.mesh );
+		this.action = this.mixer.clipAction( this.mesh.animations[0] );
+		console.log(this.action)
+		  this.action.setLoop( THREE.LoopOnce )
+		  this.action.clampWhenFinished = true
+		  this.action.enable = true
+		this.action.play();
+	  //this.mesh = new THREE.Mesh(objGeometry, DEFAULT_MATERIAL);
 	  this.spawned = true;
 	  let startPointTile = window.stage.getTile(window.stage.startPoint.row, window.stage.startPoint.column)
-	  this.mesh.position.set(startPointTile.tileX, 10, startPointTile.tileY);
+	  this.mesh.position.set(startPointTile.tileX, 40, startPointTile.tileY);
 	  window.world.scene.add(this.mesh);
 	}
 

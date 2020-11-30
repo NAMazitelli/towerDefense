@@ -38,81 +38,101 @@ export class loadResources {
 		this.textureloader = new THREE.TextureLoader(this.loadManager);
 
 		window.meshes = {}
-		this.fbxloader.load('src/models/HexTile.fbx', 
-			(object) => {
+		this.loadModel('src/models/HexTile.fbx', "TILE")
+		this.loadModel('src/models/Tower_Ice.fbx', "TOWER_TYPE_ICE")
+		this.loadModel('src/models/Tower_Fire.fbx', "TOWER_TYPE_FIRE")
+		this.loadModel('src/models/Tower_Light.fbx', "TOWER_TYPE_SPEED")
+		this.loadModel('src/models/Enemy2.fbx', "ENEMY", (object) => { 	
+		let mixer = new THREE.AnimationMixer( object );
+		let action = mixer.clipAction( object.animations[0] );
+		console.log("1", object)
+		action.reset();
+		action.play();
+			window.meshes.ENEMY_FBX = object
 				object.traverse( function ( child ) {
-	    	        if ( child.isMesh ) {
-	    	            window.meshes.TILE = child;
-						child.castShadow = true;
-						child.receiveShadow = true;
-	    	        }
-	    	    });
-			},
-			this.loadManager.onProgress,
-			this.loadManager.onError			
-		);
-
-		this.fbxloader.load('src/models/Tower_Ice.fbx', (object) => {
-			object.traverse( function ( child ) {
     	        if ( child.isMesh ) {
-    	            window.meshes.TOWER_TYPE_ICE = child;
+    	            window.meshes.ENEMY = child;
+					child.castShadow = true;
+					child.receiveShadow = true;
     	        }
     	    });
-		},
-			this.loadManager.onProgress,
-			this.loadManager.onError			
-		);
+		});
 
-		this.fbxloader.load('src/models/Tower_Fire.fbx', (object) => {
-			object.traverse( function ( child ) {
-    	        if ( child.isMesh ) {
-    	            window.meshes.TOWER_TYPE_FIRE = child;
-    	        }
-    	    });
-		},
-			this.loadManager.onProgress,
-			this.loadManager.onError			
-		);
 
-		this.fbxloader.load('src/models/Tower_Light.fbx', (object) => {
-			object.traverse( function ( child ) {
-    	        if ( child.isMesh ) {
-    	            window.meshes.TOWER_TYPE_SPEED = child;
-    	        }
-    	    });
-		},
-			this.loadManager.onProgress,
-			this.loadManager.onError			
-		);
-
+		const diffuseColor = new THREE.Color().setHSL( 1, 0.5, 1 * 0.5 + 0.1 ).multiplyScalar( 1 - 1 * 0.2 );
+		const specularShininess = Math.pow(1 , 1 * 10 );
+		const specularColor = new THREE.Color( 0.5, 0.5, 0.5 );
 
 		window.TILE_COLORS = {
-			//GRASS_TILE: new THREE.MeshBasicMaterial({ color: 0x32a852 } ),
-			//GROUND_TILE: new THREE.MeshBasicMaterial({ color: 0xb0b0b0 } ),
-			GRASS_TILE: new THREE.MeshBasicMaterial({ map: this.textureloader.load('src/models/TextureGrass.png') } ),
-			GROUND_TILE: new THREE.MeshBasicMaterial({ map: this.textureloader.load('src/models/TextureRock.png') } ),
-			CONCRETE_TILE: new THREE.MeshBasicMaterial({ map: this.textureloader.load('src/models/TextureSand.png') } ),
+			//GRASS_TILE: new THREE.MeshPhongMaterial({ color: 0x32a852 } ),
+			//GROUND_TILE: new THREE.MeshPhongMaterial({ color: 0xb0b0b0 } ),
+			GRASS_TILE: new THREE.MeshPhongMaterial({ 
+				map: this.textureloader.load('src/models/TextureGrass.png'),
+				color:diffuseColor ,
+				specular: specularColor,
+				reflectivity: 1,
+				shininess: 0
+			} ),
+			GROUND_TILE: new THREE.MeshPhongMaterial({ 
+				map: this.textureloader.load('src/models/TextureRock.png'),
+				color:diffuseColor,
+				specular: specularColor,
+				reflectivity: 1,
+				shininess: 0
+			} ),
+			CONCRETE_TILE: new THREE.MeshPhongMaterial({ map: this.textureloader.load('src/models/TextureSand.png'),
+				color:diffuseColor,
+				specular: specularColor,
+				reflectivity: 1,
+				shininess: 0
+			} ),
 			EMPTY_TILE: new THREE.MeshBasicMaterial({ color: 0x000000 } ),
 			HOVERED_TILE_OK: new THREE.MeshBasicMaterial({ color: 0x4444ff } ),
 			HOVERED_TILE_ERR: new THREE.MeshBasicMaterial({ color: 0xff0000 } ),
 			SELECTED_TILE: new THREE.MeshBasicMaterial({ color: 0x64644 } ),
 		};
 
+
+
     }
 
-	animateBar(objee) {
+	animateBar(objBar) {
 
-	  	objee.percentComplete += objee.updateAmount;
+	  	objBar.percentComplete += objBar.updateAmount;
 
 	    // if the bar fills up, just reset it.
 	    // you could also change the color here
-	    if ( objee.percentComplete >= 100 ) {
-	    	objee.percentComplete = 5;
+	    if ( objBar.percentComplete >= 100 ) {
+	    	objBar.percentComplete = 5;
 	    }
 	    if (window.hud) { 
-	    	window.hud.progress.style.width = objee.percentComplete + '%' 
+	    	window.hud.progress.style.width = objBar.percentComplete + '%' 
 	    };
-		objee.frameID = requestAnimationFrame( () => objee.animateBar(objee) )
+		objBar.frameID = requestAnimationFrame( () => objBar.animateBar(objBar) )
+	}
+
+	loadModel(model, index, callback = false) {
+		console.log(index)
+		console.log(window.meshes)
+
+		this.fbxloader.load(model, 
+			(object) => {
+				if (callback) { 
+					callback(object) 
+				} else {
+					object.traverse( function ( child ) {
+		    	        if ( child.isMesh ) {
+		    	            window.meshes[index] = child;
+							child.castShadow = true;
+							child.receiveShadow = true;
+		    	        }
+		    	    });
+				}
+			},
+			this.loadManager.onProgress,
+			this.loadManager.onError			
+		);
+
 	}
 }
 

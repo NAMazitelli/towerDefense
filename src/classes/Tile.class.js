@@ -34,8 +34,11 @@ export class Tile {
         this.mesh.material.needsUpdate = true;
 
         let ratio = this.size * 2
+        console.log(this.size/8)
         this.tileX = this.column * ratio - this.column * this.size / 2;
-        this.tileY = this.column % 2 == 0 ? this.row *  ratio + this.size : (this.row *  ratio)
+        this.tileY = this.column % 2 == 0 ? 
+                    (this.row * ratio) + this.size - (this.size/8) - this.row * this.size / 4 : 
+                    (this.row * ratio) - this.row * this.size / 4    
         this.mesh.position.set(this.tileX, 0, this.tileY );
 
         window.world.scene.add(this.mesh);
