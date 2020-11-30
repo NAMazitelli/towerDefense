@@ -89,9 +89,9 @@ export class loadResources {
 		window.TILE_COLORS = {
 			//GRASS_TILE: new THREE.MeshBasicMaterial({ color: 0x32a852 } ),
 			//GROUND_TILE: new THREE.MeshBasicMaterial({ color: 0xb0b0b0 } ),
-			GRASS_TILE: new THREE.MeshLambertMaterial({ map: this.textureloader.load('src/models/TextureGrass.png') } ),
-			GROUND_TILE: new THREE.MeshLambertMaterial({ map: this.textureloader.load('src/models/TextureRock.png') } ),
-			CONCRETE_TILE: new THREE.MeshLambertMaterial({ map: this.textureloader.load('src/models/TextureSand.png') } ),
+			GRASS_TILE: new THREE.MeshBasicMaterial({ map: this.textureloader.load('src/models/TextureGrass.png') } ),
+			GROUND_TILE: new THREE.MeshBasicMaterial({ map: this.textureloader.load('src/models/TextureRock.png') } ),
+			CONCRETE_TILE: new THREE.MeshBasicMaterial({ map: this.textureloader.load('src/models/TextureSand.png') } ),
 			EMPTY_TILE: new THREE.MeshBasicMaterial({ color: 0x000000 } ),
 			HOVERED_TILE_OK: new THREE.MeshBasicMaterial({ color: 0x4444ff } ),
 			HOVERED_TILE_ERR: new THREE.MeshBasicMaterial({ color: 0xff0000 } ),
