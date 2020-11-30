@@ -23,7 +23,6 @@ export class EnemyParent {
      // this.mesh = window.meshes.ENEMY.clone();
       this.mesh= SkeletonUtils.clone(window.meshes.ENEMY_FBX);
       this.mesh.animations = window.meshes.ENEMY_FBX.animations
-		console.log("1", this.mesh)		
         this.mesh.scale.set(.3, .3, .3)				
 		this.mixer = new THREE.AnimationMixer( this.mesh );
 	//	mixamo.com
@@ -86,7 +85,6 @@ export class EnemyParent {
 		    	this.dY = this.mesh.position.z - this.nextTile.tileY;
 
 		    	this.isMoving = true;
-		    	console.log(this.nextTile.tileX)
 		   		this.mesh.lookAt(new THREE.Vector3(this.nextTile.tileX, 0,this.nextTile.tileY ))
     		} else {
     			this.destroy()

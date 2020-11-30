@@ -24,7 +24,6 @@ export class TowerParent {
     }
 
     setup() {
-        console.log(this.type)
 	  var meshTower = window.meshes[this.type].clone();
 	  meshTower.position.set(this.x, 0, this.y)
 
@@ -147,7 +146,8 @@ export class TowerParent {
 
 		if (avoidDuplicates) {
     		addToArray = this.watchedTiles.indexOf(tile) < 0 && 
-    					 !window.stage.tileMap[tile.row][tile.column].bulding;
+    					 !window.stage.tileMap[tile.row][tile.column].building;
+
     	}
 
     	if (addToArray) {

@@ -22,7 +22,6 @@ export class loadResources {
 
 
 		this.loadManager.onLoad = ( ) => {
-			console.log("wpew")
 		  	window.hud.loadingElem.classList.add( 'hidden' );
 
 		  // reset the bar in case we need to use it again
@@ -112,9 +111,6 @@ export class loadResources {
 	}
 
 	loadModel(model, index, callback = false) {
-		console.log(index)
-		console.log(window.meshes)
-
 		this.fbxloader.load(model, 
 			(object) => {
 				if (callback) { 

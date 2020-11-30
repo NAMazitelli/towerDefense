@@ -15,7 +15,7 @@ export const DEFAULT_MAP = {
 		[{type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE},  {type: GRASS_TILE, interactive: true},  {type: GRASS_TILE, interactive: true}],
 		[{type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: CONCRETE_TILE}, {type: GRASS_TILE, interactive: true}],
 		[{type: GRASS_TILE, interactive: true}, {type: GRASS_TILE, interactive: true}, {type: GRASS_TILE, interactive: true}, {type: GRASS_TILE, interactive: true}, {type: GRASS_TILE, interactive: true}, {type: GRASS_TILE, interactive: true}, {type: GRASS_TILE, interactive: true}, {type: GRASS_TILE, interactive: true}, {type: GRASS_TILE, interactive: true}, {type: GRASS_TILE, interactive: true}],
-		[{type: EMPTY_TILE}, {type: EMPTY_TILE}, {type: GROUND_TILE}, {type: GROUND_TILE}, {type: GROUND_TILE}, {type: GROUND_TILE},  {type: GROUND_TILE},  {type: GROUND_TILE}, {type: GROUND_TILE},],
+		[{type: EMPTY_TILE}, {type: EMPTY_TILE}, {type: GROUND_TILE}, {type: GROUND_TILE}, {type: GROUND_TILE}, {type: GROUND_TILE},  {type: GROUND_TILE},  {type: GROUND_TILE}, {type: GROUND_TILE},],	
 	],
 	startPoint: {column: 0, row: 2},
 	endPoint: {column: 0, row: 6},
