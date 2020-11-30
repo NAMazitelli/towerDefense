@@ -26,16 +26,14 @@ export class EnemyParent {
 		console.log("1", this.mesh)		
         this.mesh.scale.set(.3, .3, .3)				
 		this.mixer = new THREE.AnimationMixer( this.mesh );
+	//	mixamo.com
 		this.action = this.mixer.clipAction( this.mesh.animations[0] );
-		console.log(this.action)
-		  this.action.setLoop( THREE.LoopOnce )
-		  this.action.clampWhenFinished = true
-		  this.action.enable = true
+
 		this.action.play();
 	  //this.mesh = new THREE.Mesh(objGeometry, DEFAULT_MATERIAL);
 	  this.spawned = true;
 	  let startPointTile = window.stage.getTile(window.stage.startPoint.row, window.stage.startPoint.column)
-	  this.mesh.position.set(startPointTile.tileX, 40, startPointTile.tileY);
+	  this.mesh.position.set(startPointTile.tileX, 20, startPointTile.tileY);
 	  window.world.scene.add(this.mesh);
 	}
 
@@ -81,12 +79,15 @@ export class EnemyParent {
 
     	} else {
     		if(this.path.length > 0) {
+
 		    	let nextPoint = this.path.shift();
 		    	this.nextTile = window.stage.getTile(nextPoint.r, nextPoint.c);
 			  	this.dX = this.mesh.position.x - this.nextTile.tileX;
 		    	this.dY = this.mesh.position.z - this.nextTile.tileY;
 
 		    	this.isMoving = true;
+		    	console.log(this.nextTile.tileX)
+		   		this.mesh.lookAt(new THREE.Vector3(this.nextTile.tileX, 0,this.nextTile.tileY ))
     		} else {
     			this.destroy()
     		}

@@ -18,12 +18,12 @@ import {
     TOWER_TYPE_SPEED 
 } from './src/utils/constants.js';
 import {loadResources} from './src/utils/loadResources.js';
-
+const clock = new THREE.Clock();
 var intersects, hoverObj, hoveredTile, hoveredTileObj, activeTileObj, tmpOldColor, tmpOldColorActive;
 var towers = [];
 var raycaster = new THREE.Raycaster(); // create once
 var mouse = new THREE.Vector2(); // create once
-
+let delta;
 var storeButtons = document.querySelectorAll('.purchase_button');
 
 function init() {
@@ -56,13 +56,17 @@ function allLoaded() {
 }
 
 function mainLoop() {
+    delta = clock.getDelta();
+
     if (window.gameState.lives > 0) {
 
         if (window.gameMode.enemies.length > 0) {
             window.gameMode.enemies.forEach(function(value){
                 if (value.spawned) { 
                     value.moveToNextPoint()
-                }
+                    value.mixer.update( delta );
+
+                }       
             })
         }
         window.hud.update();
