@@ -23,12 +23,11 @@ var intersects, hoverObj, hoveredTile, hoveredTileObj, activeTileObj, tmpOldColo
 var towers = [];
 var raycaster = new THREE.Raycaster(); // create once
 var mouse = new THREE.Vector2(); // create once
-var meshesToObjects = {};
 
 var storeButtons = document.querySelectorAll('.purchase_button');
 
 function init() {
-
+    window.meshesToObjects = {}
     window.hud = new HUD();
     window.allLoaded = allLoaded;
     window.loader = new loadResources();
@@ -57,8 +56,8 @@ function allLoaded() {
 }
 
 function mainLoop() {
-    if (window.gameState.lives > 0 && window.start) {
-        requestAnimationFrame( mainLoop );
+    if (window.gameState.lives > 0) {
+
         if (window.gameMode.enemies.length > 0) {
             window.gameMode.enemies.forEach(function(value){
                 if (value.spawned) { 
@@ -66,7 +65,6 @@ function mainLoop() {
                 }
             })
         }
-
         window.hud.update();
         window.gameState.update();
 
@@ -101,7 +99,6 @@ function onDocumentMouseMove( event ) {
         if (hoveredTileObj && !hoveredTileObj.selected) {
             hoveredTileObj.setMaterial(hoveredTileObj.color);
         } 
-
         setHoveredTile(intersectedObject)
     } else {
         if (hoveredTileObj && !hoveredTileObj.selected) {

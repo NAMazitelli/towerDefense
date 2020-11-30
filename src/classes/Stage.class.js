@@ -14,31 +14,24 @@ export class Stage {
 
     setup() {
     	let row;
-    	//window.loader.fbxloader.load('src/models/HexTile.fbx', (object) => {
-    	  /*  object.traverse( function ( child ) {
-    	        if ( child.isMesh ) {
-    	            window.tileMesh = child;
-    	        }
-    	    });*/
-	        for (let irow = 0; irow < this.tileMapConfig.length; irow++) {
-	        	row = [];
-	        	let tmConfigRow = this.tileMapConfig[irow];
-	        	let newTile;
-		        for (let i = 0; i < tmConfigRow.length; i++) {
-		        	newTile = new Tile({ 
-		        		column: i, 
-		        		row: irow, 
-		        		type: tmConfigRow[i].type, 
-		        		size: this.tileSize, 
-		        		interactive: tmConfigRow[i].interactive 
-		        	})
-	            	row.push(newTile);
-		        	newTile.setup();
-	            }
-	            this.tileMap.push(row);
-	        }
-    	//})
 
+        for (let irow = 0; irow < this.tileMapConfig.length; irow++) {
+        	row = [];
+        	let tmConfigRow = this.tileMapConfig[irow];
+        	let newTile;
+	        for (let i = 0; i < tmConfigRow.length; i++) {
+	        	newTile = new Tile({ 
+	        		column: i, 
+	        		row: irow, 
+	        		type: tmConfigRow[i].type, 
+	        		size: this.tileSize, 
+	        		interactive: tmConfigRow[i].interactive 
+	        	})
+            	row.push(newTile);
+	        	newTile.setup();
+            }
+            this.tileMap.push(row);
+        }
     }
 
     getTile(x,y) { 

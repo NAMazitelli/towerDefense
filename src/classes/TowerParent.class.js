@@ -24,11 +24,8 @@ export class TowerParent {
     }
 
     setup() {
-
-	  var objGeometryTower = new THREE.BoxGeometry(50, 80, 50);
-	  var meshTower = new THREE.Mesh(objGeometryTower, this.material);
-
-	  var meshTower =window.meshes.TOWER_TYPE_ICE.clone();
+        console.log(this.type)
+	  var meshTower = window.meshes[this.type].clone();
 	  meshTower.position.set(this.x, 0, this.y)
 
 	  if (this.range > 0) {

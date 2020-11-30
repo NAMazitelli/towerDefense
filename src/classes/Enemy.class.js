@@ -82,7 +82,7 @@ export class EnemyParent {
     }
 
     destroy() {
-		if(this.path.length < 0) {
+		if(this.path.length <= 0) {
 			window.gameState.restLife()
 		} else {
 			window.gameState.addKill();

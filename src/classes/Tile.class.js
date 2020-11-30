@@ -27,34 +27,23 @@ export class Tile {
 
     setup() {
 
-            this.color = window.TILE_COLORS[this.type];
-            this.material = window.TILE_COLORS[this.type];
-            this.mesh = window.meshes.TILE.clone();
-            this.mesh.material = this.material;
-            this.mesh.material.needsUpdate = true;
+        this.color = window.TILE_COLORS[this.type];
+        this.material = window.TILE_COLORS[this.type];
+        this.mesh = window.meshes.TILE.clone();
+        this.mesh.material = this.material;
+        this.mesh.material.needsUpdate = true;
 
-            let ratio = this.size * 2
-            this.tileX = this.column * ratio - this.column * this.size / 4;
-            this.tileY = this.column % 2 == 0 ? this.row *  ratio + this.size : (this.row *  ratio)
-            this.mesh.position.set(this.tileX, 0, this.tileY );
-            //this.mesh.scale.set(20, 15, 20)
-            console.log(this.mesh)
-            window.world.scene.add(this.mesh);
-            window.meshesToObjects = {}
-            window.meshesToObjects[this.mesh.uuid] = {"row": this.row, "column": this.column}
-            if (this.debug) { 
-                this.debugMesh.position.set(this.tileX, 0, this.tileY ) 
-                window.world.scene.add(this.debugMesh);    
-            }
-        //this.polygon(0 ,0,this.size,6);
-        //this.geometry = new THREE.ShapeGeometry(this.shape);
-        //this.mesh.rotation.set(-1.570, 0, 0)
-        /*let ratio = this.size * 2
-        this.tileX = this.column * ratio - this.column * this.size / 4;
+        let ratio = this.size * 2
+        this.tileX = this.column * ratio - this.column * this.size / 2;
         this.tileY = this.column % 2 == 0 ? this.row *  ratio + this.size : (this.row *  ratio)
-        this.mesh.rotation.set(-1.570, 0, 0)
         this.mesh.position.set(this.tileX, 0, this.tileY );
-        if (this.debug) { this.debugMesh.position.set(this.tileX, 0, this.tileY ) }*/
+
+        window.world.scene.add(this.mesh);
+        window.meshesToObjects[this.mesh.uuid] = {"row": this.row, "column": this.column}
+        if (this.debug) { 
+            this.debugMesh.position.set(this.tileX, 0, this.tileY ) 
+            window.world.scene.add(this.debugMesh);    
+        }
     }
 
     polygon(x, y, radius, npoints) {
@@ -108,23 +97,12 @@ export class Tile {
   }
 
   createTower(props) {
-    if (!window.towerMesh) {
-        window.fbxloader.load('src/models/Tower_Fire.fbx', (object) => {
-            object.traverse(( child ) => {
-                if ( child.isMesh ) {
-                    window.towerMesh = child;
-                }
-            });
-
-            this.building = new TowerParent({...props, selected: this.selected});
-            window.gameMode.towers.push(this.building)
-            this.building.setup();
+        this.building = new TowerParent({
+            ...props, 
+            selected: this.selected
         });
-    } else {
-        this.building = new TowerParent({...props, selected: this.selected});
         window.gameMode.towers.push(this.building)
         this.building.setup();
-    }
   }
 
   setSelected(setting) { 
