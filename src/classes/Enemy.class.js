@@ -96,6 +96,7 @@ export class EnemyParent {
 		if(this.path.length <= 0) {
 			window.gameState.restLife()
 		} else {
+			window.gameState.gold += 10;
 			window.gameState.addKill();
 		}
 		
