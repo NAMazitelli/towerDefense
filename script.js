@@ -47,11 +47,11 @@ function allLoaded() {
 
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
     document.addEventListener( 'click', handleClick, false );
-    document.addEventListener( 'touch', handleClick, false );
+    document.addEventListener( 'touchstart', handleClick, false );
 
     let hordebtn = document.getElementById("horde-btn");
     hordebtn.addEventListener( 'click', () => { window.gameMode.spawnHorde(window.gameMode) });
-    hordebtn.addEventListener( 'touch', () => { window.gameMode.spawnHorde(window.gameMode) });
+    hordebtn.addEventListener( 'touchstart', () => { window.gameMode.spawnHorde(window.gameMode) });
 
     mainLoop();
 }
