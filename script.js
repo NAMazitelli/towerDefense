@@ -41,17 +41,18 @@ function allLoaded() {
     window.stage.setup();
     window.gameMode = new GameMode();
     window.gameState = new GameState(PLAYER_SETTINGS);
-
+    window.world.HDRIIllumination('src/images/fondo.hdr')
 
     window.hud.setUpStore(purchaseButtonClick);
 
-
-
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
     document.addEventListener( 'click', handleClick, false );
-    
+    document.addEventListener( 'touch', handleClick, false );
+
     let hordebtn = document.getElementById("horde-btn");
     hordebtn.addEventListener( 'click', () => { window.gameMode.spawnHorde(window.gameMode) });
+    hordebtn.addEventListener( 'touch', () => { window.gameMode.spawnHorde(window.gameMode) });
+
     mainLoop();
 }
 
@@ -83,6 +84,7 @@ function mainLoop() {
             })
         }
     }
+    console.log(window.world.scene)
     window.world.render();
     requestAnimationFrame(mainLoop)
 }

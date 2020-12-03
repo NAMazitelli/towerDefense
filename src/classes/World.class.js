@@ -1,6 +1,7 @@
 import * as THREE from '../utils/three.module.js';
 
 import { MapControls } from '../utils/OrbitControls.js';
+import { RGBELoader } from '../utils/RGBELoader.js';
 
 export class World{
     constructor(){
@@ -17,7 +18,7 @@ export class World{
 
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize( window.innerWidth, window.innerHeight );
-        this.scene.background = new THREE.Color( 0x556655 );
+
 
         // controls
         this.controls = new MapControls( this.camera, this.renderer.domElement );
@@ -43,6 +44,20 @@ export class World{
         this.scene.add( pointLight );
 
         document.body.appendChild( this.renderer.domElement );
+    }
+    
+    HDRIIllumination(file){
+        var pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+        pmremGenerator.compileEquirectangularShader();
+        new RGBELoader()
+        .setDataType( THREE.UnsignedByteType )
+        .load( file, (texture)=>{
+            var envMap = pmremGenerator.fromEquirectangular( texture ).texture;
+        //    this.scene.environment = envMap;
+      //      this.scene.background = envMap;
+            texture.dispose();
+            pmremGenerator.dispose();
+        } );
     }
 
     render(){

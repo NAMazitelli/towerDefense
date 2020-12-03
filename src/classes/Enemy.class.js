@@ -19,21 +19,18 @@ export class EnemyParent {
     }
 
     spawn() {
-	  var objGeometry = new THREE.SphereBufferGeometry( 20, 10, 10 );
-     // this.mesh = window.meshes.ENEMY.clone();
-      this.mesh= SkeletonUtils.clone(window.meshes.ENEMY_FBX);
-      this.mesh.animations = window.meshes.ENEMY_FBX.animations
-        this.mesh.scale.set(.3, .3, .3)				
+	  	var objGeometry = new THREE.SphereBufferGeometry( 20, 10, 10 );
+      	this.mesh= SkeletonUtils.clone(window.meshes.ENEMY_FBX);
+      	this.mesh.animations = window.meshes.ENEMY_FBX.animations
+        this.mesh.scale.set(.2, .2, .2)				
 		this.mixer = new THREE.AnimationMixer( this.mesh );
-	//	mixamo.com
 		this.action = this.mixer.clipAction( this.mesh.animations[0] );
 
 		this.action.play();
-	  //this.mesh = new THREE.Mesh(objGeometry, DEFAULT_MATERIAL);
-	  this.spawned = true;
-	  let startPointTile = window.stage.getTile(window.stage.startPoint.row, window.stage.startPoint.column)
-	  this.mesh.position.set(startPointTile.tileX, 20, startPointTile.tileY);
-	  window.world.scene.add(this.mesh);
+	  	this.spawned = true;
+	  	let startPointTile = window.stage.getTile(window.stage.startPoint.row, window.stage.startPoint.column)
+	  	this.mesh.position.set(startPointTile.tileX, 20, startPointTile.tileY);
+	  	window.world.scene.add(this.mesh);
 	}
 
     moveToNextPoint() {

@@ -90,7 +90,13 @@ export class loadResources {
 			HOVERED_TILE_ERR: new THREE.MeshBasicMaterial({ color: 0xff0000 } ),
 			SELECTED_TILE: new THREE.MeshBasicMaterial({ color: 0x64644 } ),
 		};
-
+		window.hdri = this.textureloader.load('src/images/fondo.hdr', (tx) => {
+		
+			//window.scene.background = tx
+		    this.skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
+         	this.skybox = new THREE.Mesh( tx);
+         	this.scene.add(this.skybox);
+		});
 
 
     }
