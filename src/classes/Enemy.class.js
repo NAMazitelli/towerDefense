@@ -1,4 +1,3 @@
-import * as THREE from '../utils/three.module.js';
 import { DEFAULT_MATERIAL } from '../utils/constants.js';
 import { SkeletonUtils } from '../utils/SkeletonUtils.js';
 
@@ -30,7 +29,7 @@ export class EnemyParent {
 	  	this.spawned = true;
 	  	let startPointTile = window.stage.getTile(window.stage.startPoint.row, window.stage.startPoint.column)
 	  	this.mesh.position.set(startPointTile.tileX, 20, startPointTile.tileY);
-	  	window.world.scene.add(this.mesh);
+	  	window.world.addToScene(this.mesh);
 	}
 
     moveToNextPoint() {

@@ -38,7 +38,7 @@ export class TowerParent {
 		}
 	  }
    	  this.toggleRange(this.selected);
-	  window.world.scene.add(meshTower);
+	  window.world.addToScene(meshTower);
     }
 
     findRelativeTiles(tile, avoidDuplicates = true) {

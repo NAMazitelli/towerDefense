@@ -45,7 +45,12 @@ export class World{
 
         document.body.appendChild( this.renderer.domElement );
     }
-    
+    addToScene(mesh) {
+        this.scene.add(mesh)
+    }
+    RemoveFromScene(mesh) {
+        this.scene.remove(mesh)
+    }
     HDRIIllumination(file){
         var pmremGenerator = new THREE.PMREMGenerator( this.renderer );
         pmremGenerator.compileEquirectangularShader();

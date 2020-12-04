@@ -1,4 +1,3 @@
-import * as THREE from 'https://unpkg.com/three@0.121.1/build/three.module.js';
 import { TOWER_TYPE_DEFAULT } from '../utils/constants.js';
 import { HOVERED_TILE_OK, SELECTED_TILE, DEFAULT_MATERIAL } from '../utils/constants.js';
 
@@ -16,7 +15,7 @@ export class Projectile {
         var objGeometry = new THREE.SphereBufferGeometry( 10, 10, 10 );
         this.mesh = new THREE.Mesh(objGeometry, DEFAULT_MATERIAL);
         this.mesh.position.set(this.spawnTile.tileX, 20, this.spawnTile.tileY);
-        window.world.scene.add(this.mesh);
+        window.world.addToScene(this.mesh);
     }
 
     move() {
@@ -40,7 +39,7 @@ export class Projectile {
 
             if (parseInt(this.mesh.position.x) == parseInt(this.tile.tileX) &&
                 parseInt(this.mesh.position.z) == parseInt(this.tile.tileY)) {
-                window.world.scene.remove(this.mesh);
+                window.world.RemoveFromScene(this.mesh);
                 this.parent.projectiles = this.parent.projectiles.filter(data => data != this);
 
                 if (this.tile.enemies.length > 0){

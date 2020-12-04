@@ -1,4 +1,3 @@
-import * as THREE from '../utils/three.module.js';
 import { TOWER_TYPE_DEFAULT } from '../utils/constants.js';
 import { Tile } from './Tile.class.js';
 
@@ -10,6 +9,8 @@ export class Stage {
         this.enemyPath = props.enemyPath ? props.enemyPath : [];
         this.startPoint = props.startPoint ? props.startPoint : {};
         this.endPoint = props.endPoint ? props.endPoint : {};
+        this.tileOffsetX = props.tileOffsetX ? props.tileOffsetX : 0;
+        this.tileOffsetY = props.tileOffsetY ? props.tileOffsetY : 0;
     }
 
     setup() {
@@ -25,7 +26,9 @@ export class Stage {
 	        		row: irow, 
 	        		type: tmConfigRow[i].type, 
 	        		size: this.tileSize, 
-	        		interactive: tmConfigRow[i].interactive 
+	        		interactive: tmConfigRow[i].interactive,
+                    tileOffsetX: this.tileOffsetX,
+                    tileOffsetY: this.tileOffsetY,
 	        	})
             	row.push(newTile);
 	        	newTile.setup();

@@ -1,9 +1,10 @@
-import * as THREE from '../utils/three.module.js';
 import { TowerParent } from './TowerParent.class.js';
 import { TOWER_TYPE_DEFAULT, 
          GRASS_TILE, 
          GROUND_TILE, 
-         CONCRETE_TILE } from '../utils/constants.js';
+         CONCRETE_TILE,
+         GAME_MODE_AR,
+         GAME_MODE_DEFAULT } from '../utils/constants.js';
 
 export class Tile {
     constructor(props){
@@ -23,25 +24,39 @@ export class Tile {
         this.building;
         this.enemies = [];
         this.selected = false;
+        this.tileOffsetY = props.tileOffsetY ? props.tileOffsetY : 0;
+        this.tileOffsetX = props.tileOffsetX ? props.tileOffsetX : 0;
     }
 
     setup() {
 
         this.color = window.TILE_COLORS[this.type];
         this.material = window.TILE_COLORS[this.type];
-        this.mesh = window.meshes.TILE.clone();
-        this.mesh.material = this.material;
-        this.mesh.material.needsUpdate = true;
+
 
         let ratio = this.size * 2
-        console.log(this.size/8)
-        this.tileX = this.column * ratio - this.column * this.size / 2;
+        this.tileX = (this.column * ratio - this.column * this.size / 2) - this.tileOffsetX;
         this.tileY = this.column % 2 == 0 ? 
-                    (this.row * ratio) + this.size - (this.size/8) - this.row * this.size / 4 : 
-                    (this.row * ratio) - this.row * this.size / 4    
-        this.mesh.position.set(this.tileX, 0, this.tileY );
+                    ((this.row * ratio) + this.size - (this.size/8) - this.row * this.size / 4) - this.tileOffsetY: 
+                    ((this.row * ratio) - this.row * this.size / 4) - this.tileOffsetY
+    console.log(this.tileX, this.tileY)
+        switch (window.user_game_mode) {
+            case GAME_MODE_AR: 
+                this.mesh = window.meshes.TILEAR.clone();
+                this.mesh.material = this.material;
+                this.mesh.material.needsUpdate = true;
+                this.mesh.scale.set(0.2, 0.2, 0.2)
+                this.mesh.position.set(this.tileX, 0, this.tileY );
+                break;
+            case GAME_MODE_DEFAULT:
+                this.mesh = window.meshes.TILE.clone();
+                this.mesh.material = this.material;
+                this.mesh.material.needsUpdate = true;
+                this.mesh.position.set(this.tileX, 0, this.tileY );
+                break;
+        }
+        window.world.addToScene(this.mesh);
 
-        window.world.scene.add(this.mesh);
         window.meshesToObjects[this.mesh.uuid] = {"row": this.row, "column": this.column}
         if (this.debug) { 
             this.debugMesh.position.set(this.tileX, 0, this.tileY ) 

@@ -1,5 +1,4 @@
 import { EnemyParent } from './Enemy.class.js';
-import * as THREE from '../utils/three.module.js';
 
 export class GameMode {
     constructor(props){

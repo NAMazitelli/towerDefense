@@ -12,12 +12,12 @@ export class loadResources {
     }
 
     setup() {
-    	const thisObjeeee = this;
+    	const thisObj = this;
 		this.loadManager.onStart = () => {
 		  // onStart may be called multiple times
 		  // don't run the animation more than once
-		  if ( thisObjeeee.frameID !== null ) return;
-		  thisObjeeee.animateBar(thisObjeeee);
+		  if ( thisObj.frameID !== null ) return;
+		  thisObj.animateBar(thisObj);
 		};
 
 
@@ -25,9 +25,9 @@ export class loadResources {
 		  	window.hud.loadingElem.classList.add( 'hidden' );
 
 		  // reset the bar in case we need to use it again
-		  thisObjeeee.percentComplete = 0;
+		  thisObj.percentComplete = 0;
 		  window.hud.progress.style.width = 0;
-		  cancelAnimationFrame( thisObjeeee.animateBar );
+		  cancelAnimationFrame( thisObj.animateBar );
 	 	  window.allLoaded()
 
 		  // do any other on load things
@@ -37,6 +37,7 @@ export class loadResources {
 		this.textureloader = new THREE.TextureLoader(this.loadManager);
 
 		window.meshes = {}
+		this.loadModel('src/models/SM_HexTile.fbx', "TILEAR")
 		this.loadModel('src/models/HexTile.fbx', "TILE")
 		this.loadModel('src/models/Tower_Ice.fbx', "TOWER_TYPE_ICE")
 		this.loadModel('src/models/Tower_Fire.fbx', "TOWER_TYPE_FIRE")
@@ -44,7 +45,6 @@ export class loadResources {
 		this.loadModel('src/models/Enemy2.fbx', "ENEMY", (object) => { 	
 		let mixer = new THREE.AnimationMixer( object );
 		let action = mixer.clipAction( object.animations[0] );
-		console.log("1", object)
 		action.reset();
 		action.play();
 			window.meshes.ENEMY_FBX = object
@@ -137,18 +137,3 @@ export class loadResources {
 
 	}
 }
-
-
-/*
-loadManager.onLoad = () => {
-    window.hud.loadingElem.style.display = 'none';
-    window.start = true
-};
- 
-loadManager.onProgress = (urlOfLastItemLoaded, itemsLoaded, itemsTotal) => {
-    const progress = itemsLoaded / itemsTotal;
-    window.hud.progressbar.style.transform = `scaleX(${progress})`;
-};
-
-
-*/

@@ -1,0 +1,138 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+
+canvas {
+    display: block;
+}
+.ui_hud {
+    padding: 15px;
+    position: absolute;
+    color: white;
+    font-family: 'Tahoma';
+}
+.flexbox {
+    display: flex;
+    align-items: center;
+}
+.ui_label {
+    padding: 0 20px;
+}
+.ui_purchases_menu{
+    padding: 10px;
+    max-width: 350px;
+    background: #666;
+    border: #fff;
+    display:flex;
+    flex-direction: column;
+}
+.purchase_button {
+    height:50px;
+    width:50px;
+    display: inline-block;
+
+}
+.purchase_button.TOWER_TYPE_ICE {
+    background: #7bd6e8;
+}
+.purchase_button.TOWER_TYPE_FIRE {
+    background: #e8887b;
+}
+.purchase_button.TOWER_TYPE_SPEED {
+    background: #e8e17b;
+}
+.purchase_button:hover{
+    background: #ccc;
+}
+.hidden {
+    display: none!important;
+}
+
+#loading-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-overlay-hidden {
+  display: none !important;
+}
+
+#loading-bar {
+  width: 25em;
+  height: 1em;
+  border-radius: 0.25em;
+  background-color: black;
+
+  border: 1px solid grey;
+
+  display: inline-flex;
+}
+
+#progress {
+  background-color: #75b800;
+  height: inherit;
+  border-radius: inherit;
+
+  width: 5%;
+}
+
+#start_menu {
+  height:100vh;
+  width:100vw;
+  background: url('../images/background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.buttons-container {
+  width:95%;
+  max-width:500px;
+  height:60%;
+  max-height: 400px;
+  margin:auto;
+  top:0;
+  bottom: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  display:flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-evenly;
+  text-align:center;
+  font-size:24px;
+  font-family: 'Yeon Sung', cursive;
+}
+
+.main-menu-btn {
+  background:rgba(0,0,0,0.3);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  align-items: stretch;
+  justify-content: space-evenly;
+  text-align:center;
+    height: 100%;
+}
+
+.main-menu-btn:hover {
+  background-color:red;
+}
+
+@media screen and (max-width: 700px) {
+  .ui_hud {
+    max-width:150px!important;
+  }
+  .flexbox {
+    display: block!important;
+  }
+}

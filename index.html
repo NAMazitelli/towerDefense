@@ -2,136 +2,70 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content= "width=device-width, user-scalable=no">
         <title>Modelo 3D</title>
+        <script src='src/utils/three.min.js'></script>
+
+        <script src='src/utils/threeAR.js'></script>
+
         <script type="module" src="script.js"></script>
-        <style>
-            body {
-                margin: 0px;
-                padding: 0px;
-            }
-            canvas {
-                display: block;
-            }
-            .ui_hud {
-                padding: 15px;
-                position: absolute;
-                color: white;
-                font-family: 'Tahoma';
-            }
-            .flexbox {
-                display: flex;
-                align-items: center;
-            }
-            .ui_label {
-                padding: 0 20px;
-            }
-            .ui_purchases_menu{
-                padding: 10px;
-                max-width: 500px;
-                background: #666;
-                border: #fff;
-                display:flex;
-                flex-direction: column;
-            }
-            .purchase_button {
-                height:50px;
-                width:50px;
-                display: inline-block;
-
-            }
-            .purchase_button.TOWER_TYPE_ICE {
-                background: #7bd6e8;
-            }
-            .purchase_button.TOWER_TYPE_FIRE {
-                background: #e8887b;
-            }
-            .purchase_button.TOWER_TYPE_SPEED {
-                background: #e8e17b;
-            }
-            .purchase_button:hover{
-                background: #ccc;
-            }
-            .hidden {
-                display: none!important;
-            }
-
-            #loading-overlay {
-              position: absolute;
-              width: 100%;
-              height: 100%;
-
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            }
-
-            .loading-overlay-hidden {
-              display: none !important;
-            }
-
-            #loading-bar {
-              width: 25em;
-              height: 1em;
-              border-radius: 0.25em;
-              background-color: black;
-
-              border: 1px solid grey;
-
-              display: inline-flex;
-            }
-
-            #progress {
-              background-color: #75b800;
-              height: inherit;
-              border-radius: inherit;
-
-              width: 5%;
-            }
-        </style>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
+        <link href="src/css/styles.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <div id="loading-overlay">
-          <div id="loading-bar">
-              <span id="progress"></span>
-          </div>
-        </div>
-        <div class="ui_hud">
-            <div class="flexbox header">
-                <h2>TOWER DEFENSE</h2>
-                <div class="ui_box">
-                    <span class="ui_label">
-                        Gold: <span id="gold_label">200</span>
-                    </span>
-                </div>
-                <div class="ui_box">
-                    <span class="ui_label">
-                        Lives Left: <span id="lives_label">200</span>
-                    </span>
-                </div>
-                <div class="ui_box">
-                    <span class="ui_label">
-                        Hordes Left: <span id="hordes_left_label">200</span>
-                    </span>
-                </div>
-                <div class="ui_box">
-                    <span class="ui_label">
-                        Next horde coming in <span id="time_left_label">200</span>
-                    </span>
-                </div>
-                <div class="ui_box">
-                    <button id="horde-btn">
-                        START HORDE
-                    </button>
-                </div>
-            </div>
-
-            <div id="ui_purchases_menu" class="ui_purchases_menu hidden">
-                <h3>Deploy a building</h3>
-                <div class="purchase_options">
-                    <div id="purchase_btn_template" class="purchase_button hidden"></div>
-                </div>
+        <div id="start_menu">
+            <div class="buttons-container">
+                <div class="main-menu-btn" id="start_game">Start Game</div>
+                <div class="main-menu-btn">Instructions</div>
+                <div class="main-menu-btn" id="start_game_ar">AR+</div>
+                <div class="main-menu-btn">Options</div>
+                <div class="main-menu-btn">About us</div>
             </div>
         </div>
+        <div class="hidden" id="main_game">
+            <div id="loading-overlay">
+              <div id="loading-bar">
+                  <span id="progress"></span>
+              </div>
+            </div>
+            <div class="ui_hud">
+                <div class="flexbox header">
+                    <h2>TOWER DEFENSE</h2>
+                    <div class="ui_box">
+                        <span class="ui_label">
+                            Gold: <span id="gold_label">200</span>
+                        </span>
+                    </div>
+                    <div class="ui_box">
+                        <span class="ui_label">
+                            Lives Left: <span id="lives_label">200</span>
+                        </span>
+                    </div>
+                    <div class="ui_box">
+                        <span class="ui_label">
+                            Hordes Left: <span id="hordes_left_label">200</span>
+                        </span>
+                    </div>
+                    <div class="ui_box">
+                        <span class="ui_label">
+                            Next horde coming in <span id="time_left_label">200</span>
+                        </span>
+                    </div>
+                    <div class="ui_box">
+                        <button id="horde-btn">
+                            START HORDE
+                        </button>
+                    </div>
+                </div>
 
+                <div id="ui_purchases_menu" class="ui_purchases_menu hidden">
+                    <h3>Deploy a building</h3>
+                    <div class="purchase_options">
+                        <div id="purchase_btn_template" class="purchase_button hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

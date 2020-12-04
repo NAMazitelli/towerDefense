@@ -1,9 +1,7 @@
-import * as THREE from './src/utils/three.module.js';
 import { World } from './src/classes/World.class.js';
 import { Stage } from './src/classes/Stage.class.js';
 import { GameMode } from './src/classes/GameMode.class.js';
 import { GameState } from './src/classes/GameState.class.js';
-import { DEFAULT_MAP } from './src/maps/Default.map.js';
 import { HUD } from './src/classes/HUD.class.js';
 import { 
     HOVERED_TILE_OK, 
@@ -15,9 +13,15 @@ import {
     PLAYER_SETTINGS,
     TOWER_TYPE_ICE,
     TOWER_TYPE_FIRE,
-    TOWER_TYPE_SPEED 
+    TOWER_TYPE_SPEED,
+    GAME_MODE_DEFAULT,
+    GAME_MODE_AR,
+    GAME_MODES,
+    WORLD_MODES,
+    MAP_MODES,
 } from './src/utils/constants.js';
 import {loadResources} from './src/utils/loadResources.js';
+
 const clock = new THREE.Clock();
 var intersects, hoverObj, hoveredTile, hoveredTileObj, activeTileObj, tmpOldColor, tmpOldColorActive;
 var towers = [];
@@ -25,10 +29,15 @@ var raycaster = new THREE.Raycaster(); // create once
 var mouse = new THREE.Vector2(); // create once
 let delta;
 var storeButtons = document.querySelectorAll('.purchase_button');
+document.getElementById('start_game').addEventListener( 'click', () => init(GAME_MODE_DEFAULT))
+document.getElementById('start_game_ar').addEventListener( 'click', () => init(GAME_MODE_AR))
 
-function init() {
+function init(mode) {
+    document.getElementById('start_menu').classList.add("hidden")
+    document.getElementById('main_game').classList.remove("hidden")
     window.meshesToObjects = {}
     window.hud = new HUD();
+    window.user_game_mode = mode;
     window.allLoaded = allLoaded;
     window.loader = new loadResources();
     window.loader.setup();
@@ -36,28 +45,32 @@ function init() {
 
 
 function allLoaded() {
-    window.world = new World();
-    window.stage = new Stage(DEFAULT_MAP);
+    var defaultMap = MAP_MODES[window.user_game_mode];
+    window.world = new WORLD_MODES[window.user_game_mode];
+    window.gameMode = new GAME_MODES[window.user_game_mode];
+    window.stage = new Stage(defaultMap);
     window.stage.setup();
-    window.gameMode = new GameMode();
     window.gameState = new GameState(PLAYER_SETTINGS);
-    window.world.HDRIIllumination('src/images/fondo.hdr')
+    //window.world.HDRIIllumination('src/images/fondo.hdr')
 
     window.hud.setUpStore(purchaseButtonClick);
 
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-    document.addEventListener( 'click', handleClick, false );
-    document.addEventListener( 'touchstart', handleClick, false );
+    document.addEventListener( 'click', (e) => handleClick(e), false );
+    document.addEventListener( 'touchstart', (e) => handleClick(e), false );
 
     let hordebtn = document.getElementById("horde-btn");
     hordebtn.addEventListener( 'click', () => { window.gameMode.spawnHorde(window.gameMode) });
-    hordebtn.addEventListener( 'touchstart', () => { window.gameMode.spawnHorde(window.gameMode) });
+    hordebtn.addEventListener( 'touchstart', () => { console.log("HOLA"); window.gameMode.spawnHorde(window.gameMode); });
 
     mainLoop();
 }
 
 function mainLoop() {
     delta = clock.getDelta();
+    if (window.gameMode.contextAR) { 
+        window.gameMode.contextAR.actualizar();
+    }
 
     if (window.gameState.lives > 0) {
 
@@ -84,7 +97,6 @@ function mainLoop() {
             })
         }
     }
-    console.log(window.world.scene)
     window.world.render();
     requestAnimationFrame(mainLoop)
 }
@@ -92,12 +104,24 @@ function mainLoop() {
 
 function onDocumentMouseMove( event ) {
     // update the mouse variable
-    mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    let worldSceneChildren;
+    if (event.touches && event.touches.length > 0) {
+        mouse.x = ( event.touches[0].clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.touches[0].clientY / window.innerHeight ) * 2 + 1;
+        worldSceneChildren = window.gameMode.marker.children
+
+    } else {
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        worldSceneChildren = window.world.scene.children
+
+    }
+
     raycaster.setFromCamera( mouse, window.world.camera );
     
     // check if something near mouse
-    let tmpIntersect = raycaster.intersectObjects( window.world.scene.children );
+    let tmpIntersect = raycaster.intersectObjects( worldSceneChildren );
+
     if (tmpIntersect.length > 0) {
         let intersectedObject = tmpIntersect[0].object;
 
@@ -131,8 +155,8 @@ function setHoveredTile(intersectedObject) {
     }
 }
 
-function handleClick() {
-
+function handleClick(event) {
+    onDocumentMouseMove(event);
     if (hoveredTileObj && hoveredTileObj.interactive) {
         window.hud.hideBuildingMenu();
 
@@ -173,4 +197,4 @@ function purchaseButtonClick(e) {
 }
 
 
-init();
+//init();
