@@ -11,10 +11,11 @@
         <script type="module" src="script.js"></script>
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Yeon+Sung&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
         <link href="src/css/styles.css" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <div id="start_menu">
+        <div id="start_menu" class="hidden">
             <div class="buttons-container">
                 <div class="main-menu-btn" id="start_game">Start Game</div>
                 <div class="main-menu-btn">Instructions</div>
@@ -25,45 +26,143 @@
         </div>
         <div class="hidden" id="main_game">
             <div id="loading-overlay">
+
+                <div class="preloader">
+                  <div class="preloader__ring">
+                    <div class="preloader__sector">L</div>
+                    <div class="preloader__sector">o</div>
+                    <div class="preloader__sector">a</div>
+                    <div class="preloader__sector">d</div>
+                    <div class="preloader__sector">i</div>
+                    <div class="preloader__sector">n</div>
+                    <div class="preloader__sector">g</div>
+                    <div class="preloader__sector">.</div>
+                    <div class="preloader__sector">.</div>
+                    <div class="preloader__sector">.</div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                  </div>
+                  <div class="preloader__ring">
+                    <div class="preloader__sector">L</div>
+                    <div class="preloader__sector">o</div>
+                    <div class="preloader__sector">a</div>
+                    <div class="preloader__sector">d</div>
+                    <div class="preloader__sector">i</div>
+                    <div class="preloader__sector">n</div>
+                    <div class="preloader__sector">g</div>
+                    <div class="preloader__sector">.</div>
+                    <div class="preloader__sector">.</div>
+                    <div class="preloader__sector">.</div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                    <div class="preloader__sector"></div>
+                  </div>
+                </div>
               <div id="loading-bar">
                   <span id="progress"></span>
               </div>
             </div>
             <div class="ui_hud">
                 <div class="flexbox header">
-                    <h2>TOWER DEFENSE</h2>
                     <div class="ui_box">
                         <span class="ui_label">
-                            Gold: <span id="gold_label">200</span>
+                            <img class="ui_icon" src="src/images/mineral-icon.png"/> <span id="gold_label">200</span>
                         </span>
                     </div>
                     <div class="ui_box">
                         <span class="ui_label">
-                            Lives Left: <span id="lives_label">200</span>
+                            <img class="ui_icon" src="src/images/heart-icon.png"/> <span id="lives_label">200</span>
                         </span>
                     </div>
-                    <div class="ui_box">
+                    <div class="ui_box hidden">
                         <span class="ui_label">
                             Hordes Left: <span id="hordes_left_label">200</span>
                         </span>
                     </div>
                     <div class="ui_box">
                         <span class="ui_label">
-                            Next horde coming in <span id="time_left_label">200</span>
+                            <img class="ui_icon" src="src/images/clock-icon.png"/>  <span id="time_left_label">200</span>
                         </span>
                     </div>
                     <div class="ui_box">
-                        <button id="horde-btn">
-                            START HORDE
-                        </button>
+                        <span class="ui_label" id="horde-btn">
+                            <img class="ui_icon" src="src/images/play-button.png"/>
+                        </span>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div id="ui_purchases_menu" class="ui_purchases_menu hidden">
-                    <h3>Deploy a building</h3>
-                    <div class="purchase_options">
-                        <div id="purchase_btn_template" class="purchase_button hidden"></div>
+        <div id="ui_purchases_menu" class="ui_purchases_menu hidden">
+            <!--h3>Deploy a building</h3-->
+            <div class="purchase_options">
+                <div class="purchase_buttons">
+                    <div id="purchase_btn_template" class="purchase_button hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="ui_upgrades_menu" class="ui_upgrades_menu hidden">
+            <h3><span id="upgrade_tower_name"></span> LEVEL <span id="upgrade_tower_lvl"></h3>
+            <div id="upgrade_btn" class="upgrade_btn">LEVEL UP</div>
+            <div id="destroy_btn" class="upgrade_btn">DESTROY TOWER</div>
+
+
+        </div>
+
+        <div id="ui_description_menu" class="ui_description_menu hidden">
+            <div class="ui_description_container">
+                <div class="ui_description_header">
+                    <h3 id="ui_tower_name">FIRE TOWER</h3>
+                    <div class="ui_atk_box">
+                        <span id="ui_atk"> ATK:</span>
+                        <span id="ui_atk_value">200</span>
                     </div>
+                    <div class="ui_spd_box">
+                        <span id="ui_spd"> SPD:</span>
+                        <span id="ui_spd_value">200</span>
+                    </div>
+                </div>
+                <div id="ui_button_build" class="ui_button_build">
+                    BUILD TOWER
+                </div>
+                <div class="ui_button_price">
+                    <img class="ui_icon" src="src/images/mineral-2-icon.png"/>  - 20 
                 </div>
             </div>
         </div>

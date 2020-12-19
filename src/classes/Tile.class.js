@@ -39,7 +39,6 @@ export class Tile {
         this.tileY = this.column % 2 == 0 ? 
                     ((this.row * ratio) + this.size - (this.size/8) - this.row * this.size / 4) - this.tileOffsetY: 
                     ((this.row * ratio) - this.row * this.size / 4) - this.tileOffsetY
-    console.log(this.tileX, this.tileY)
         switch (window.user_game_mode) {
             case GAME_MODE_AR: 
                 this.mesh = window.meshes.TILEAR.clone();
@@ -132,5 +131,12 @@ export class Tile {
 
   setMaterial(material) {
     this.mesh.material = material;
+  }
+
+  destroyBuilding() {
+    console.log("destroy", this.building)
+    window.gameMode.enemies.splice(window.gameMode.enemies.indexOf(this.building), 1);
+    window.world.scene.remove(this.building.mesh);
+    this.building = false;
   }
 }

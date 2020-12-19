@@ -9,6 +9,7 @@ export class GameState {
 		this.hordes_left = 20;
 		this.counting = false;
 		this.tower_settings = props.tower_settings;
+		this.horde_level = 1;
 	}
 
 	update() {

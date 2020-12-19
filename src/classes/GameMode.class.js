@@ -19,6 +19,7 @@ export class GameMode {
     		}
     		this.playingHorde = false;
     		window.gameState.hordes_left -= 1
+            window.gameState.horde_level += 1
     	}
     }
 }

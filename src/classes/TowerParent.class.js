@@ -7,6 +7,8 @@ export class TowerParent {
     constructor(props){
         this.type = props.type ? props.type : TOWER_TYPE_DEFAULT;
         this.level = 1;
+        this.name = props.name;
+        this.base_damage = props.damage;
         this.damage = props.damage;
         this.range = props.range;
         this.maxLevel = 3;
@@ -21,11 +23,12 @@ export class TowerParent {
         this.attacking = false;
         this.attack_speed = props.attack_speed
         this.projectiles = [];
+        this.mesh;
     }
 
     setup() {
-	  var meshTower = window.meshes[this.type].clone();
-	  meshTower.position.set(this.x, 0, this.y)
+	  this.mesh = window.meshes[this.type].clone();
+	  this.mesh.position.set(this.x, 0.5, this.y)
 
 	  if (this.range > 0) {
 	  	this.findRelativeTiles(this.tile);
@@ -38,7 +41,16 @@ export class TowerParent {
 		}
 	  }
    	  this.toggleRange(this.selected);
-	  window.world.addToScene(meshTower);
+      this.mesh.scale.set(.04, .04, .04)              
+	  window.world.addToScene(this.mesh);
+      console.log(this.tile)
+      window.meshesToObjects[this.mesh.uuid] = this.tile
+    }
+
+    levelUp() {
+        this.level++;
+        this.damage = this.level * this.base_damage;
+
     }
 
     findRelativeTiles(tile, avoidDuplicates = true) {

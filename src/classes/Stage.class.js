@@ -34,7 +34,9 @@ export class Stage {
 	        	newTile.setup();
             }
             this.tileMap.push(row);
+
         }
+        console.log(this.startPoint)
     }
 
     getTile(x,y) { 

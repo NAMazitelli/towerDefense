@@ -3,7 +3,7 @@ import { HOVERED_TILE_OK, SELECTED_TILE, DEFAULT_MATERIAL } from '../utils/const
 
 export class Projectile {
     constructor(props){
-        this.speed = 1;
+        this.speed = 0.1;
         this.tile = props.tile;
         this.spawnTile = props.spawnTile;
         this.mesh;
@@ -12,9 +12,9 @@ export class Projectile {
     }
 
     setup() {
-        var objGeometry = new THREE.SphereBufferGeometry( 10, 10, 10 );
+        var objGeometry = new THREE.SphereBufferGeometry( 0.5, 0.5, 0.5 );
         this.mesh = new THREE.Mesh(objGeometry, DEFAULT_MATERIAL);
-        this.mesh.position.set(this.spawnTile.tileX, 20, this.spawnTile.tileY);
+        this.mesh.position.set(this.spawnTile.tileX, 2, this.spawnTile.tileY);
         window.world.addToScene(this.mesh);
     }
 

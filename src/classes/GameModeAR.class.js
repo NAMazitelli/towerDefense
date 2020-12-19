@@ -9,6 +9,8 @@ export class GameModeAR {
     	this.towers = [];
         this.contextAR = new ContextAR(window.world);
         this.marker = this.contextAR.crearMarcador('src/images/pattern-marker (1).patt', "main");
+        this.horde_level = 1;
+
     }
 
     spawnHorde() {

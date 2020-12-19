@@ -8,27 +8,27 @@ export class EnemyParent {
     	this.path = [...window.stage.enemyPath];
     	this.startPoint = window.stage.startPoint;
     	this.endPoint = window.stage.endPoint;
-    	this.speed = 0.5;
+    	this.speed = 0.03;
     	this.isMoving = false;
     	this.mesh;
     	this.nextTile;
     	this.spawned = false;
     	this.enemies = [];
-    	this.hp = 100;
+    	this.hp = 50 * window.gameState.horde_level;
     }
 
     spawn() {
 	  	var objGeometry = new THREE.SphereBufferGeometry( 20, 10, 10 );
       	this.mesh= SkeletonUtils.clone(window.meshes.ENEMY_FBX);
       	this.mesh.animations = window.meshes.ENEMY_FBX.animations
-        this.mesh.scale.set(.2, .2, .2)				
+        this.mesh.scale.set(.01, .01, .01)				
 		this.mixer = new THREE.AnimationMixer( this.mesh );
 		this.action = this.mixer.clipAction( this.mesh.animations[0] );
 
 		this.action.play();
 	  	this.spawned = true;
 	  	let startPointTile = window.stage.getTile(window.stage.startPoint.row, window.stage.startPoint.column)
-	  	this.mesh.position.set(startPointTile.tileX, 20, startPointTile.tileY);
+	  	this.mesh.position.set(startPointTile.tileX, 0.5, startPointTile.tileY);
 	  	window.world.addToScene(this.mesh);
 	}
 
@@ -92,7 +92,7 @@ export class EnemyParent {
 		if(this.path.length <= 0) {
 			window.gameState.restLife()
 		} else {
-			window.gameState.gold += 10;
+			window.gameState.gold += 10 * window.gameState.horde_level;
 			window.gameState.addKill();
 		}
 		

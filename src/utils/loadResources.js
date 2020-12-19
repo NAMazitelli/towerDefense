@@ -38,7 +38,7 @@ export class loadResources {
 
 		window.meshes = {}
 		this.loadModel('src/models/SM_HexTile.fbx', "TILEAR")
-		this.loadModel('src/models/HexTile.fbx', "TILE")
+		this.loadModel('src/models/SM_HexTile.fbx', "TILE")
 		this.loadModel('src/models/Tower_Ice.fbx', "TOWER_TYPE_ICE")
 		this.loadModel('src/models/Tower_Fire.fbx', "TOWER_TYPE_FIRE")
 		this.loadModel('src/models/Tower_Light.fbx', "TOWER_TYPE_SPEED")
@@ -58,28 +58,29 @@ export class loadResources {
 		});
 
 
-		const diffuseColor = new THREE.Color().setHSL( 1, 0.5, 1 * 0.5 + 0.1 ).multiplyScalar( 1 - 1 * 0.2 );
+		const diffuseColor = new THREE.Color().setHSL( 1, 1, 1 )
 		const specularShininess = Math.pow(1 , 1 * 10 );
-		const specularColor = new THREE.Color( 0.5, 0.5, 0.5 );
+		const specularColor = new THREE.Color( 1, 1, 1 );
 
 		window.TILE_COLORS = {
 			//GRASS_TILE: new THREE.MeshPhongMaterial({ color: 0x32a852 } ),
 			//GROUND_TILE: new THREE.MeshPhongMaterial({ color: 0xb0b0b0 } ),
 			GRASS_TILE: new THREE.MeshPhongMaterial({ 
 				map: this.textureloader.load('src/models/TextureGrass.png'),
-				color:diffuseColor ,
-				specular: specularColor,
+				//color:diffuseColor ,
+				//specular: specularColor,
 				reflectivity: 1,
-				shininess: 0
+				shininess: 0.2
 			} ),
 			GROUND_TILE: new THREE.MeshPhongMaterial({ 
-				map: this.textureloader.load('src/models/TextureRock.png'),
+				map: this.textureloader.load('src/models/textura 1.png'),
 				color:diffuseColor,
 				specular: specularColor,
 				reflectivity: 1,
 				shininess: 0
 			} ),
-			CONCRETE_TILE: new THREE.MeshPhongMaterial({ map: this.textureloader.load('src/models/TextureSand.png'),
+			CONCRETE_TILE: new THREE.MeshPhongMaterial({ 
+				map: this.textureloader.load('src/models/TextureRock.png'),
 				color:diffuseColor,
 				specular: specularColor,
 				reflectivity: 1,
@@ -90,7 +91,7 @@ export class loadResources {
 			HOVERED_TILE_ERR: new THREE.MeshBasicMaterial({ color: 0xff0000 } ),
 			SELECTED_TILE: new THREE.MeshBasicMaterial({ color: 0x64644 } ),
 		};
-		window.hdri = this.textureloader.load('src/images/fondo.hdr', (tx) => {
+/*		window.hdri = this.textureloader.load('src/images/fondo.hdr', (tx) => {
 		
 			//window.scene.background = tx
 		    this.skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
@@ -98,7 +99,7 @@ export class loadResources {
          	this.scene.add(this.skybox);
 		});
 
-
+*/
     }
 
 	animateBar(objBar) {

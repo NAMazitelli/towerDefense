@@ -9,15 +9,16 @@ export class World{
        
         // ISOMETRIC CAMERA
         let aspect = window.innerWidth / window.innerHeight
-        let d = 600
+        let d = 30
         this.camera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 1, 2000)
 
         this.camera.position.z = 0;
         this.camera.position.y = 0;
         this.camera.position.x = 0;
 
-        this.renderer = new THREE.WebGLRenderer();
+        this.renderer = new THREE.WebGLRenderer( { antialias: true, logarithmicDepthBuffer: true });
         this.renderer.setSize( window.innerWidth, window.innerHeight );
+        this.renderer.domElement.id = 'MainCanvas';
 
 
         // controls
@@ -28,8 +29,8 @@ export class World{
 
         this.controls.screenSpacePanning = false;
 
-        this.controls.minDistance = 1000;
-        this.controls.maxDistance = 3000;
+        this.controls.minDistance = 100;
+        this.controls.maxDistance = 300;
 
         this.controls.maxPolarAngle = Math.PI / 2;
 
@@ -38,10 +39,10 @@ export class World{
         dirLight.position.set( 300, 300, 300 ).normalize();
         this.scene.add( dirLight );
 
-        const pointLight = new THREE.PointLight( 0xffffff, 1 );
-        pointLight.position.set( 300, 1000, 300 );
-        pointLight.color.setHSL( 1, 1, 1 );
-        this.scene.add( pointLight );
+        //const pointLight = new THREE.PointLight( 0xffffff, 1 );
+        //pointLight.position.set( 300, 1000, 300 );
+        //pointLight.color.setHSL( 1, 1, 1 );
+       // this.scene.add( pointLight );
 
         document.body.appendChild( this.renderer.domElement );
     }

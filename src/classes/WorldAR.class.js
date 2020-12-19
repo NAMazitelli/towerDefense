@@ -36,11 +36,11 @@ export class WorldAR{
         dirLight.position.set( 300, 300, 300 ).normalize();
         this.scene.add( dirLight );
 
-        const pointLight = new THREE.PointLight( 0xffffff, 1 );
+      /*  const pointLight = new THREE.PointLight( 0xffffff, 1 );
         pointLight.position.set( 300, 1000, 300 );
         pointLight.color.setHSL( 1, 1, 1 );
-        this.scene.add( pointLight );
-        this.iluminarConFoto('./hdr/fondo.png',false);
+        this.scene.add( pointLight );*/
+        //this.iluminarConFoto('./hdr/fondo.png',false);
 
         document.body.appendChild( this.renderer.domElement );
     }

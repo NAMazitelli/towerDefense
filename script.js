@@ -51,17 +51,24 @@ function allLoaded() {
     window.stage = new Stage(defaultMap);
     window.stage.setup();
     window.gameState = new GameState(PLAYER_SETTINGS);
-    //window.world.HDRIIllumination('src/images/fondo.hdr')
+    window.world.HDRIIllumination('src/images/fondo.hdr')
 
-    window.hud.setUpStore(purchaseButtonClick);
+    window.hud.setUpStore(descriptionButtonClick);
 
     document.addEventListener( 'mousemove', onDocumentMouseMove, false );
     document.addEventListener( 'click', (e) => handleClick(e), false );
-    document.addEventListener( 'touchstart', (e) => handleClick(e), false );
+    document.addEventListener( 'touchend', (e) => handleTouch(e), false );
+    document.addEventListener( 'touchstart', (event) => { event.preventDefault() })
+    document.getElementById('destroy_btn').addEventListener('click', (e) => destroyTower())
+    document.getElementById('upgrade_btn').addEventListener('click', (e) => levelUpTower())
+
+    document.getElementById("ui_button_build").addEventListener( 'touchend', (e)  => {
+        purchaseButtonClick(window.hud.tower, e)
+    });
 
     let hordebtn = document.getElementById("horde-btn");
     hordebtn.addEventListener( 'click', () => { window.gameMode.spawnHorde(window.gameMode) });
-    hordebtn.addEventListener( 'touchstart', () => { console.log("HOLA"); window.gameMode.spawnHorde(window.gameMode); });
+    hordebtn.addEventListener( 'touchend', () => { window.gameMode.spawnHorde(window.gameMode); });
 
     mainLoop();
 }
@@ -101,20 +108,43 @@ function mainLoop() {
     requestAnimationFrame(mainLoop)
 }
 
+function handleTouch(e) {
+    // stop touch event
+    e.stopPropagation();
+//    e.preventDefault();
+
+    // translate to mouse event
+    //var clkEvt = document.createEvent('MouseEvent');
+   /*document.initMouseEvent('mousemove', true, true, window, e.detail, 
+                 e.touches[0].screenX, e.touches[0].screenY, 
+                 e.touches[0].clientX, e.touches[0].clientY, 
+                 false, false, false, false, 
+                 0, null);*/
+  //  document.dispatchEvent(clkEvt);
+
+    // or just handle touch event
+    handleClick(e);
+}
 
 function onDocumentMouseMove( event ) {
+    if ( event.target.id != "MainCanvas") {
+        return;
+    }
     // update the mouse variable
     let worldSceneChildren;
-    if (event.touches && event.touches.length > 0) {
-        mouse.x = ( event.touches[0].clientX / window.innerWidth ) * 2 - 1;
-        mouse.y = - ( event.touches[0].clientY / window.innerHeight ) * 2 + 1;
-        worldSceneChildren = window.gameMode.marker.children
+    if (event.changedTouches && event.changedTouches.length > 0) {
+        mouse.x = ( event.changedTouches[0].clientX / window.innerWidth ) * 2 - 1;
+        mouse.y = - ( event.changedTouches[0].clientY / window.innerHeight ) * 2 + 1;
 
     } else {
         mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-        worldSceneChildren = window.world.scene.children
+    }
 
+    if (window.user_game_mode == GAME_MODE_AR) {
+        worldSceneChildren = window.gameMode.marker.children
+    } else { 
+        worldSceneChildren = window.world.scene.children
     }
 
     raycaster.setFromCamera( mouse, window.world.camera );
@@ -124,63 +154,90 @@ function onDocumentMouseMove( event ) {
 
     if (tmpIntersect.length > 0) {
         let intersectedObject = tmpIntersect[0].object;
-
         // If another tile was hovered before this
         if (hoveredTileObj && !hoveredTileObj.selected) {
-            hoveredTileObj.setMaterial(hoveredTileObj.color);
+            setHoveredTile(hoveredTileObj, false)
         } 
         setHoveredTile(intersectedObject)
     } else {
         if (hoveredTileObj && !hoveredTileObj.selected) {
-            hoveredTileObj.setMaterial(hoveredTileObj.color);
+            setHoveredTile(hoveredTileObj, false)
         }
+
         hoveredTile, hoveredTileObj = false;
 
     }
 }
 
-function setHoveredTile(intersectedObject) {
+function setHoveredTile(intersectedObject, hovered) {
     hoveredTile = intersectedObject;
     let hoveredTileObjCoords = window.meshesToObjects[intersectedObject.uuid];
 
     if (hoveredTileObjCoords) {
-
         hoveredTileObj = window.stage.getTile(hoveredTileObjCoords.row, hoveredTileObjCoords.column);
-        if (hoveredTileObj.interactive && !hoveredTileObj.selected){
-            hoveredTileObj.setMaterial(window.TILE_COLORS[HOVERED_TILE_OK]);
+        if (hovered) {
+            if (hoveredTileObj.interactive && !hoveredTileObj.selected){
+                hoveredTileObj.setMaterial(window.TILE_COLORS[HOVERED_TILE_OK]);
 
-        } else if (!hoveredTileObj.selected){
-            hoveredTileObj.setMaterial(window.TILE_COLORS[HOVERED_TILE_ERR]);
+            } else if (!hoveredTileObj.selected){
+                hoveredTileObj.setMaterial(window.TILE_COLORS[HOVERED_TILE_ERR]);
+            }
+        } else {
+            hoveredTileObj.setMaterial(hoveredTileObj.color);
         }
     }
 }
 
 function handleClick(event) {
+    if ( event.target.id != "MainCanvas") {
+        return;
+    }
+    event.stopPropagation();
     onDocumentMouseMove(event);
-    if (hoveredTileObj && hoveredTileObj.interactive) {
-        window.hud.hideBuildingMenu();
+    if (hoveredTileObj) {
+        if(hoveredTileObj.interactive) {
+            window.hud.hideBuildingMenu();
+            window.hud.hideUpgradeMenu();
+            if (hoveredTileObj != activeTileObj) {
+                if (activeTileObj) {
+                    activeTileObj.setSelected(false)
+                    activeTileObj.setMaterial(activeTileObj.color);
+                };
 
-        if (hoveredTileObj != activeTileObj) {
-            window.hud.showBuildingMenu();
-            if (activeTileObj) {
-                activeTileObj.setSelected(false)
+                if (hoveredTileObj.building) {
+                    window.hud.showUpgradeMenu(hoveredTileObj.building);
+                } else {
+                    window.hud.showBuildingMenu();
+                }
+
+                activeTileObj = hoveredTileObj;
+                activeTileObj.setMaterial(window.TILE_COLORS[SELECTED_TILE]);
+                activeTileObj.setSelected(true);
+            } else {
                 activeTileObj.setMaterial(activeTileObj.color);
-            };
-
-            activeTileObj = hoveredTileObj;
-            activeTileObj.setMaterial(window.TILE_COLORS[SELECTED_TILE]);
-            activeTileObj.setSelected(true);
-        } else {
-            activeTileObj.setMaterial(activeTileObj.color);
-            activeTileObj.setSelected(false)
-            activeTileObj = false;
+                activeTileObj.setSelected(false)
+                activeTileObj = false;
+            }
+        } else { 
+            if (activeTileObj) {
+                activeTileObj.setMaterial(activeTileObj.color);
+                activeTileObj.setSelected(false)
+                activeTileObj = false;
+                window.hud.hideUpgradeMenu();
+                window.hud.hideBuildingMenu();
+            }
+            hoveredTileObj.setSelected(false)
+            hoveredTileObj = false;
         }
     }
 }
 
-function purchaseButtonClick(e) {
+function purchaseButtonClick(tower, e) {
+    e.stopPropagation()
+
     if(activeTileObj && !activeTileObj.building) {
-        if (window.gameState.gold >= e.price) {
+        if (window.gameState.gold >= tower.price) {
+
             activeTileObj.createTower({
                 x: activeTileObj.tileX, 
                 y: activeTileObj.tileY, 
@@ -188,13 +245,52 @@ function purchaseButtonClick(e) {
                     column: activeTileObj.column, 
                     row: activeTileObj.row 
                 },
-                ...e
+                ...tower
             });
 
-            window.gameState.gold -= e.price;
+            window.gameState.gold -= tower.price;
         }
+    }
+    window.hud.hideBuildingMenu();
+     window.hud.showUpgradeMenu(activeTileObj.building);
+
+}
+
+function descriptionButtonClick(tower, e) {
+    e.stopPropagation()
+    if(activeTileObj && !activeTileObj.building) {
+        window.hud.showDescription({
+            x: activeTileObj.tileX, 
+            y: activeTileObj.tileY, 
+            tile: { 
+                column: activeTileObj.column, 
+                row: activeTileObj.row 
+            },
+            ...tower
+        });
     }
 }
 
+function destroyTower() {
+    if (activeTileObj && activeTileObj.building) {
+        activeTileObj.setMaterial(activeTileObj.color);
+        activeTileObj.setSelected(false)
+        activeTileObj.destroyBuilding();
+        activeTileObj = false;    
+        window.hud.hideBuildingMenu();
+     }
+}
 
-//init();
+function levelUpTower() {
+    if (activeTileObj && activeTileObj.building) {
+        var levelPrice = activeTileObj.building.level * 25;
+
+        if (window.gameState.gold >= levelPrice) {
+            activeTileObj.building.levelUp();
+            window.gameState.gold -= levelPrice;
+            window.hud.showUpgradeMenu(hoveredTileObj.building);
+        }
+     }
+}
+
+init(GAME_MODE_DEFAULT)
